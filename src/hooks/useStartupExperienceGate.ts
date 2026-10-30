@@ -43,6 +43,12 @@ export const resolveStartupExperienceStep = ({
     isPlaybackEntryViewPromptOpen,
     isPonderOnboardingOpen,
 }: StartupExperienceState): StartupExperienceStep => {
+    // polarbearlin fork: music.topsiai.com is a public player, and first-time visitors (mostly on phones)
+    // got stuck in the 5-6 step first-launch sequence. VITE_SKIP_STARTUP_EXPERIENCE=true skips the whole
+    // sequence; release notes, interface choice and Ponder stay reachable from Settings / Help.
+    if (import.meta.env.VITE_SKIP_STARTUP_EXPERIENCE === 'true') {
+        return null;
+    }
     if (isReleaseNotesOpen || isPlaybackEntryViewPromptOpen || isPonderOnboardingOpen) {
         return null;
     }
