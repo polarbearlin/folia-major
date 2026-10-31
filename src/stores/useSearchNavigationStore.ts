@@ -167,14 +167,22 @@ const executeSearch = async (
     return searchOnlineProviderSongs(sourceTab, query, limit, offset);
 };
 
+const isHomeViewTab = (value: unknown): value is HomeViewTab => (
+    value === 'playlist' || value === 'local' || value === 'albums' || value === 'navidrome' || value === 'radio' || value === 'explore'
+);
+
+// Fork (music.topsiai.com): VITE_DEFAULT_HOME_TAB picks the first home tab for visitors with no remembered tab
+// (e.g. radio, so the home shows recommended playlists instead of only the liked-songs list).
+const DEFAULT_HOME_VIEW_TAB: HomeViewTab = isHomeViewTab(import.meta.env.VITE_DEFAULT_HOME_TAB)
+    ? import.meta.env.VITE_DEFAULT_HOME_TAB
+    : 'playlist';
+
 const getInitialHomeViewTab = (): HomeViewTab => {
     if (typeof window === 'undefined') {
-        return 'playlist';
+        return DEFAULT_HOME_VIEW_TAB;
     }
     const savedTab = localStorage.getItem(LAST_HOME_VIEW_TAB_KEY);
-    return savedTab === 'playlist' || savedTab === 'local' || savedTab === 'albums' || savedTab === 'navidrome' || savedTab === 'radio' || savedTab === 'explore'
-        ? savedTab
-        : 'playlist';
+    return isHomeViewTab(savedTab) ? savedTab : DEFAULT_HOME_VIEW_TAB;
 };
 
 export const useSearchNavigationStore = create<SearchNavigationState>((set, get) => ({
