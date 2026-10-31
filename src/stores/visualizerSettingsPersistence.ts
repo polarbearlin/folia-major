@@ -95,7 +95,10 @@ export const readStoredVisualizerMode = (): VisualizerMode => {
         return 'cadenza';
     }
 
-    return isBuiltinVisualizerMode(saved) ? saved : DEFAULT_VISUALIZER_MODE;
+    if (isBuiltinVisualizerMode(saved)) return saved;
+    // Fork (music.topsiai.com): a deploy-wide default lyric style for visitors who never picked one.
+    const forkDefault = import.meta.env.VITE_DEFAULT_VISUALIZER_MODE;
+    return isBuiltinVisualizerMode(forkDefault) ? forkDefault : DEFAULT_VISUALIZER_MODE;
 };
 
 export const readStoredVisualizerFrameRate = (): VisualizerFrameRate => {
@@ -112,7 +115,10 @@ export const readStoredVisualizerBackgroundMode = (): VisualizerBackgroundMode |
     }
 
     const saved = localStorage.getItem('visualizer_background_mode');
-    return isBuiltinVisualizerBackgroundMode(saved) ? saved : null;
+    if (isBuiltinVisualizerBackgroundMode(saved)) return saved;
+    // Fork (music.topsiai.com): a deploy-wide default background for visitors who never picked one.
+    const forkDefault = import.meta.env.VITE_DEFAULT_VISUALIZER_BACKGROUND_MODE;
+    return isBuiltinVisualizerBackgroundMode(forkDefault) ? forkDefault : null;
 };
 
 export const resolveVisualizerBackgroundMode = (
