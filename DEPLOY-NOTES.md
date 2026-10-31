@@ -10,4 +10,5 @@
   - `VITE_SKIP_STARTUP_EXPERIENCE=true` (fork-only: skip the first-launch onboarding sequence for public visitors)
   - `VITE_DEFAULT_LANGUAGE=zh-CN` (fork-only: visitors who never picked a language see Chinese instead of following the browser)
   - `VITE_DEFAULT_VISUALIZER_MODE=lumiere`, `VITE_DEFAULT_VISUALIZER_BACKGROUND_MODE=common` (fork-only: default lyric style 绘光 + 通用 background)
+  - `VITE_DEFAULT_PLAYBACK_ENTRY_VIEW=lattice` (fork-only: pressing play opens Lattice, the queue collage, for visitors who never chose)
 - Deploy: `npm run build && CLOUDFLARE_ACCOUNT_ID=652443a2dd213c9a637144902b50a5ee npx wrangler deploy`

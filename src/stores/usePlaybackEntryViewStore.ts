@@ -44,9 +44,14 @@ const LIBRARY_SUITE_PROMPT_SEEN_KEY = 'library_suite_prompt_seen';
 /** The pages the startup prompt can show, in order. */
 export type StartupPromptPage = 'library-suite' | 'playback-entry-view';
 
+// Fork (music.topsiai.com): VITE_DEFAULT_PLAYBACK_ENTRY_VIEW sets where play lands for visitors who never chose.
+const FORK_DEFAULT_ENTRY_VIEW: PlaybackEntryView = isPlaybackEntryView(import.meta.env.VITE_DEFAULT_PLAYBACK_ENTRY_VIEW)
+    ? import.meta.env.VITE_DEFAULT_PLAYBACK_ENTRY_VIEW
+    : 'player';
+
 const readEntryView = (): PlaybackEntryView => {
-    const stored = getStoredString(ENTRY_VIEW_KEY, 'player');
-    return isPlaybackEntryView(stored) ? stored : 'player';
+    const stored = getStoredString(ENTRY_VIEW_KEY, FORK_DEFAULT_ENTRY_VIEW);
+    return isPlaybackEntryView(stored) ? stored : FORK_DEFAULT_ENTRY_VIEW;
 };
 
 export type PlaybackEntryViewState = {
