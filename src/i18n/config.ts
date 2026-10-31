@@ -87,6 +87,13 @@ export const readStoredAppLanguagePreference = (): AppLanguagePreference => {
     return saved;
   }
 
+  // Fork (music.topsiai.com): visitors who never picked a language get VITE_DEFAULT_LANGUAGE
+  // (e.g. zh-CN) instead of following the browser. Choosing "follow system" in Settings still works.
+  const forkDefault = import.meta.env.VITE_DEFAULT_LANGUAGE;
+  if (isSupportedManualLanguage(forkDefault)) {
+    return forkDefault;
+  }
+
   return 'system';
 };
 
